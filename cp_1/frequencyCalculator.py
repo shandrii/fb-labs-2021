@@ -1,10 +1,26 @@
-import sys
+import sys  # arguments
+import math # logarithm
 
 def sortDict(rawDict):
     sortedDict = {}
     for i in sorted(rawDict):
         sortedDict[i]=rawDict[i]
     return sortedDict
+
+def flipSortDict(rawDict):
+    sortedDict = {}
+    invDict = {v: k for k, v in rawDict.items()}
+    for i in sorted(invDict, reverse=True):
+        sortedDict[i]=invDict[i]
+    return {v: k for k, v in sortedDict.items()}
+
+def H(ensemble):
+    h = 0
+    for z in ensemble:
+        p = ensemble[z]
+        h += p*math.log(p,2) # With the base 2.
+    return -h
+
 
 if len(sys.argv) < 2:
     print("Usage: entrophyCalculator.py <source file>")
@@ -20,8 +36,6 @@ for string in f:
         else:
             freq[i] = 1
 
-print(str(sortDict(freq)), end="\n\n\n")
-
 f.seek(0)
 
 biFreq = {}
@@ -33,17 +47,24 @@ for string in f:
         else:
             biFreq[biGram] = 1
 
-print(str(sortDict(biFreq)), end="\n\n\n")
-
-sum = 0
+totalChars = 0
 for i in freq:
-    sum += freq[i]
-print("Number of characters: ", sum)
+    totalChars += freq[i]
+totalBiChars = 0                           # Same as totalChars - 1.
+for bi in biFreq:
+    totalBiChars += biFreq[bi]
 
-sum = 0
-for i in biFreq:
-    sum += biFreq[i]
-print("Number of bigrams: ", sum)
+# Now we have the pairs "char - how many times it was in the text".
+# Let's calculate the frequency.
 
-    
+for i in freq:
+    freq[i] = freq[i]/totalChars
+for bi in biFreq:
+    biFreq[bi] = biFreq[bi]/totalBiChars
+
+print(str(flipSortDict(freq)), end="\n\n\n")
+print(str(sortDict(biFreq)), end="\n\n\n")
+print("H_1 = ", H(freq))
+print("H_2 = ", 0.5*H(biFreq))
+
 
