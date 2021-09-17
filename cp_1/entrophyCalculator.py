@@ -40,7 +40,7 @@ f.seek(0)
 
 biFreq = {}
 for string in f:
-    for i in range(0, len(string) - 1, 1): # ..., 2) to count bigrams with 2 char step.
+    for i in range(0, len(string) - 1, 2): # ..., 2) to count bigrams with 2 char step.
         biGram = string[i:i+2]
         if biGram in biFreq:
             biFreq[biGram] += 1
@@ -50,7 +50,7 @@ for string in f:
 totalChars = 0
 for i in freq:
     totalChars += freq[i]
-totalBiChars = 0                           # Same as totalChars - 1.
+totalBiChars = 0                           # Same as totalChars - 1 (for step = 1).
 for bi in biFreq:
     totalBiChars += biFreq[bi]
 
