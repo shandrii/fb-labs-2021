@@ -41,11 +41,6 @@ def count_frequency(path):
     frequency = [text.count(chr(i)) / length for i in range(a, a + 32)]
     if text.find(' ') != -1:
         frequency.append(text.count(' ') / length)
-    #     [print(chr(i), frequency[a - i], sep=' ', end='\n') for i in range(a, a + 32)]
-    #     print('пробіл', frequency[-1])
-    # else:
-    #     [print(chr(i), frequency[a - i], sep=' ', end='\n') for i in range(a, a + 32)]
-    # frequency.sort(reverse=True)
     return frequency
 
 
@@ -115,7 +110,7 @@ def filling_bigrams(bigrams_frequency: dict, withspaces, onestep):
 def entropy(frequency_arr):
     h = 0
     for p in frequency_arr:
-        h += p * math.log(p, 2)  # With the base 2.
+        h += p * math.log(p, 2)
     return -h
 
 
@@ -124,7 +119,7 @@ def bigrams_entropy(frequency_dict: dict):
     for p in frequency_dict.values():
         if p == 0:
             continue
-        h += p * math.log(p, 2)  # With the base 2.
+        h += p * math.log(p, 2)
     return -h
 
 
