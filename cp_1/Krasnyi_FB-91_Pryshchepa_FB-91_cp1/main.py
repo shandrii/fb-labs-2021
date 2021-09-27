@@ -6,7 +6,7 @@ path = 'TEXT.txt'
 
 
 def filter_with_spaces(path):
-    input_file = open(path, 'r', encoding='utf-8')
+    input_file = open(path, 'r', encoding='cp1251')
     input_text = input_file.read()
     text = ''
     input_file.close()
@@ -21,7 +21,7 @@ def filter_with_spaces(path):
 
 
 def filter_without_spaces(path):
-    input_file = open(path, 'r', encoding='utf-8')
+    input_file = open(path, 'r', encoding='cp1251')
     input_text = input_file.read()
     text = ''
     input_file.close()
@@ -85,9 +85,9 @@ def filling(arr, flag):
     if flag:
         ws.cell(33, 1).value = '\'  \''
         ws.cell(33, 2).value = arr[-1]
-        wb.save('D:\\Desktop\\учёба\\крипта\\fb-labs-2021\\cp_1\\results_for_letters_with_space.xlsx')
+        wb.save('results_for_letters_with_space.xlsx')
     else:
-        wb.save('D:\\Desktop\\учёба\\крипта\\fb-labs-2021\\cp_1\\results_for_letters_without_space.xlsx')
+        wb.save('results_for_letters_without_space.xlsx')
 
 
 def filling_bigrams(bigrams_frequency: dict, withspaces, onestep):
@@ -104,14 +104,14 @@ def filling_bigrams(bigrams_frequency: dict, withspaces, onestep):
         k += 1
     if withspaces:
         if onestep:
-            wb.save('D:\\Desktop\\учёба\\крипта\\fb-labs-2021\\cp_1\\results_for_bigrams_with_spaces_onestep.xlsx')
+            wb.save('results_for_bigrams_with_spaces_onestep.xlsx')
         else:
-            wb.save('D:\\Desktop\\учёба\\крипта\\fb-labs-2021\\cp_1\\results_for_bigrams_with_spaces_twosteps.xlsx')
+            wb.save('results_for_bigrams_with_spaces_twosteps.xlsx')
     else:
         if onestep:
-            wb.save('D:\\Desktop\\учёба\\крипта\\fb-labs-2021\\cp_1\\results_for_bigrams_without_spaces_onestep.xlsx')
+            wb.save('results_for_bigrams_without_spaces_onestep.xlsx')
         else:
-            wb.save('D:\\Desktop\\учёба\\крипта\\fb-labs-2021\\cp_1\\results_for_bigrams_without_spaces_twosteps.xlsx')
+            wb.save('results_for_bigrams_without_spaces_twosteps.xlsx')
 
 
 def entropy(frequency_arr):
