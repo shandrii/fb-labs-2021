@@ -14,6 +14,7 @@ def filter_with_spaces(path):
     for letter in input_text.lower():
         if letter in ' абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
             text += letter
+    text = ' '.join(text.split())
     with_space = open('TEXT_with_spaces.txt', 'w', encoding='utf-8')
     with_space.write(text)
     with_space.close()
@@ -62,8 +63,14 @@ def count_bigram_frequency2(path):
     text = input_text.read()
     input_text.close()
     length = len(text)
-    bigrams = [text[i:i + 2] for i in range(0, length - 1, 2)]
-    bigrams = list(set(bigrams))
+    if length % 2 == 1:
+        text += 'ъ'
+        length += 1
+    bigrams = []
+    for i in range(0, length - 1, 2):
+        bigram = text[i:i + 2]
+        if bigram not in bigrams:
+            bigrams.append(bigram)
     frequency = [round(text.count(i) / length, 5) for i in bigrams]
     return dict(zip(bigrams, frequency))
 
@@ -71,7 +78,6 @@ def count_bigram_frequency2(path):
 def filling(arr, flag):
     wb = Workbook()
     ws = wb.active
-    a = ord('а')
     for i in range(32):
         ws.cell(i + 1, 1).value = chr(a + i)
         ws.cell(i + 1, 2).value = arr[i]
@@ -120,11 +126,18 @@ def bigrams_entropy(frequency_dict: dict):
         if p == 0:
             continue
         h += p * math.log(p, 2)
-    return -h
+    return -h/2
 
 
-# filter_without_spaces(path)
-# filter_with_spaces(path)
+def redundancy(entropy, withspaces):
+    if withspaces:
+        return 1 - (entropy / math.log(33, 2))
+    else:
+        return 1 - (entropy / math.log(32, 2))
+
+
+filter_without_spaces(path)
+filter_with_spaces(path)
 filling(count_frequency('TEXT_with_spaces.txt'), True)
 filling(count_frequency('TEXT_without_spaces.txt'), False)
 filling_bigrams(count_bigram_frequency('TEXT_with_spaces.txt'), True, True)  # with spaces, one step
@@ -132,12 +145,25 @@ filling_bigrams(count_bigram_frequency2('TEXT_with_spaces.txt'), True, False)  #
 filling_bigrams(count_bigram_frequency('TEXT_without_spaces.txt'), False, True)  # without spaces one step
 filling_bigrams(count_bigram_frequency2('TEXT_without_spaces.txt'), False, False)  # without spaces two steps
 print('Entropy without spaces: ', entropy(count_frequency('TEXT_without_spaces.txt')))
+print('Redundancy without spaces: ',
+      redundancy(entropy(count_frequency('TEXT_without_spaces.txt',)), False))
 print('Entropy with spaces: ', entropy(count_frequency('TEXT_with_spaces.txt')))
+print('Redundancy with spaces: ',
+      redundancy(entropy(count_frequency('TEXT_with_spaces.txt',)), True))
+
 print('Entropy for bigrams with spaces, one step: ',
       bigrams_entropy(count_bigram_frequency('TEXT_with_spaces.txt')))
+print('Redundancy for bigrams with spaces, one step: ',
+      redundancy(bigrams_entropy(count_bigram_frequency('TEXT_with_spaces.txt',)), True))
 print('Entropy for bigrams without spaces, one step: ',
       bigrams_entropy(count_bigram_frequency('TEXT_without_spaces.txt')))
+print('Redundancy for bigrams without spaces, one step: ',
+      redundancy(bigrams_entropy(count_bigram_frequency('TEXT_without_spaces.txt',)), False))
 print('Entropy for bigrams without spaces, two steps: ',
       bigrams_entropy(count_bigram_frequency2('TEXT_without_spaces.txt')))
+print('Redundancy for bigrams without spaces, two steps: ',
+      redundancy(bigrams_entropy(count_bigram_frequency2('TEXT_without_spaces.txt')), False))
 print('Entropy for bigrams with spaces, two steps: ',
       bigrams_entropy(count_bigram_frequency2('TEXT_with_spaces.txt')))
+print('Redundancy for bigrams with spaces, two steps: ',
+      redundancy(bigrams_entropy(count_bigram_frequency2('TEXT_with_spaces.txt')), True))
