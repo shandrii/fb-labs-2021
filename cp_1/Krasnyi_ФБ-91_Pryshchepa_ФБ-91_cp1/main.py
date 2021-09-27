@@ -51,9 +51,10 @@ def count_bigram_frequency(path):
     input_text.close()
     length = len(text)
     bigrams = []
-    for i in range(a, a + 32):
-        for j in range(a, a + 32):
-            bigrams.append(chr(i) + chr(j))
+    for i in range(0, length - 1):
+        bigram = text[i:i + 2]
+        if bigram not in bigrams:
+            bigrams.append(bigram)
     frequency = [round(text.count(i) / length, 5) for i in bigrams]
     return dict(zip(bigrams, frequency))
 
