@@ -50,13 +50,17 @@ def count_bigram_frequency(path):
     text = input_text.read()
     input_text.close()
     length = len(text)
-    bigrams = []
+    bigrams_count = {}
+    bigrams_frequency = {}
+    for i in ' абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
+        for j in ' абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
+            bigrams_count[i + j] = 0
     for i in range(0, length - 1):
         bigram = text[i:i + 2]
-        if bigram not in bigrams:
-            bigrams.append(bigram)
-    frequency = [round(text.count(i) / length, 5) for i in bigrams]
-    return dict(zip(bigrams, frequency))
+        bigrams_count[bigram] += 1
+    for key in bigrams_count.keys():
+        bigrams_frequency[key] = bigrams_count[key] / length
+    return bigrams_frequency
 
 
 def count_bigram_frequency2(path):
@@ -64,16 +68,20 @@ def count_bigram_frequency2(path):
     text = input_text.read()
     input_text.close()
     length = len(text)
-    if length % 2 == 1:
-        text += 'ъ'
-        length += 1
-    bigrams = []
+    bigrams_count = {}
+    bigrams_frequency = {}
+    for i in ' абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
+        for j in ' абвгдеёжзийклмнопрстуфхцчшщъыьэюя':
+            bigrams_count[i + j] = 0
+    if length % 2:
+        text = text[0:-1]
+        length -= 1
     for i in range(0, length - 1, 2):
         bigram = text[i:i + 2]
-        if bigram not in bigrams:
-            bigrams.append(bigram)
-    frequency = [round(text.count(i) / length, 5) for i in bigrams]
-    return dict(zip(bigrams, frequency))
+        bigrams_count[bigram] += 1
+    for key in bigrams_count.keys():
+        bigrams_frequency[key] = bigrams_count[key] / (length / 2)
+    return bigrams_frequency
 
 
 def filling(arr, flag):
@@ -118,7 +126,7 @@ def entropy(frequency_arr):
     h = 0
     for p in frequency_arr:
         h += p * math.log(p, 2)
-    return -h
+    return round(-h, 5)
 
 
 def bigrams_entropy(frequency_dict: dict):
@@ -127,14 +135,14 @@ def bigrams_entropy(frequency_dict: dict):
         if p == 0:
             continue
         h += p * math.log(p, 2)
-    return -h/2
+    return round(-h / 2, 5)
 
 
 def redundancy(entropy, withspaces):
     if withspaces:
-        return 1 - (entropy / math.log(33, 2))
+        return round(1 - (entropy / math.log(33, 2)), 5)
     else:
-        return 1 - (entropy / math.log(32, 2))
+        return round(1 - (entropy / math.log(32, 2)), 5)
 
 
 filter_without_spaces(path)
@@ -147,19 +155,19 @@ filling_bigrams(count_bigram_frequency('TEXT_without_spaces.txt'), False, True) 
 filling_bigrams(count_bigram_frequency2('TEXT_without_spaces.txt'), False, False)  # without spaces two steps
 print('Entropy without spaces: ', entropy(count_frequency('TEXT_without_spaces.txt')))
 print('Redundancy without spaces: ',
-      redundancy(entropy(count_frequency('TEXT_without_spaces.txt',)), False))
+      redundancy(entropy(count_frequency('TEXT_without_spaces.txt', )), False))
 print('Entropy with spaces: ', entropy(count_frequency('TEXT_with_spaces.txt')))
 print('Redundancy with spaces: ',
-      redundancy(entropy(count_frequency('TEXT_with_spaces.txt',)), True))
+      redundancy(entropy(count_frequency('TEXT_with_spaces.txt', )), True))
 
 print('Entropy for bigrams with spaces, one step: ',
       bigrams_entropy(count_bigram_frequency('TEXT_with_spaces.txt')))
 print('Redundancy for bigrams with spaces, one step: ',
-      redundancy(bigrams_entropy(count_bigram_frequency('TEXT_with_spaces.txt',)), True))
+      redundancy(bigrams_entropy(count_bigram_frequency('TEXT_with_spaces.txt', )), True))
 print('Entropy for bigrams without spaces, one step: ',
       bigrams_entropy(count_bigram_frequency('TEXT_without_spaces.txt')))
 print('Redundancy for bigrams without spaces, one step: ',
-      redundancy(bigrams_entropy(count_bigram_frequency('TEXT_without_spaces.txt',)), False))
+      redundancy(bigrams_entropy(count_bigram_frequency('TEXT_without_spaces.txt', )), False))
 print('Entropy for bigrams without spaces, two steps: ',
       bigrams_entropy(count_bigram_frequency2('TEXT_without_spaces.txt')))
 print('Redundancy for bigrams without spaces, two steps: ',
