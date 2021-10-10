@@ -1,13 +1,13 @@
-п»ї// ******** Settings ********
-constexpr auto FILEPATH   = "Holmes.txt"; // Р’С…РѕРґРЅРѕР№ С„Р°Р№Р»
-constexpr auto H1         = "h1.csv";
-constexpr auto H1_SPC     = "h1_spc.csv";
-constexpr auto H2         = "h2.csv";
-constexpr auto H2_SPC     = "h2_spc.csv";
-constexpr auto H2_STP     = "h2_stp.csv";
+// ******** Settings ********
+constexpr auto FILEPATH = "Holmes.txt"; // Входной файл
+constexpr auto H1 = "h1.csv";
+constexpr auto H1_SPC = "h1_spc.csv";
+constexpr auto H2 = "h2.csv";
+constexpr auto H2_SPC = "h2_spc.csv";
+constexpr auto H2_STP = "h2_stp.csv";
 constexpr auto H2_SPC_STP = "h2_stp_spc.csv";
 
-constexpr auto CONSOLE = true; // Р’С‹РІРѕРґ РЅР° РєРѕРЅСЃРѕР»СЊ (true - РІС‹РІРѕРґРёС‚СЊ, false - РЅРµ РІС‹РІРѕРґРёС‚СЊ)
+constexpr auto CONSOLE = true; // Вывод на консоль (true - выводить, false - не выводить)
 // ******** ******** ********
 
 
@@ -38,14 +38,14 @@ void measureEntropy(std::unordered_map<T, int> freq, int rang, unsigned int coun
 
 	std::fstream out(save, std::fstream::out | std::fstream::trunc);
 
-	if (CONSOLE) std::cout << "Р‘СѓРєРІР°;РџРѕРІС‚РѕСЂРµРЅРёСЏ;Р§Р°СЃС‚РѕС‚Р°" << std::endl;
-	out << "Р‘СѓРєРІР°;РџРѕРІС‚РѕСЂРµРЅРёСЏ;Р§Р°СЃС‚РѕС‚Р°" << std::endl;
+	if (CONSOLE) std::cout << "Буква;Повторения;Частота" << std::endl;
+	out << "Буква;Повторения;Частота" << std::endl;
 
 	double ent = 0;
 	for (const auto& [l, c] : table) {
-		// f - С‡Р°СЃС‚РѕС‚Р°
+		// f - частота
 		double f = static_cast<double>(c) / count;
-		// Р¤РѕСЂРјСѓР»Р° РµРЅС‚СЂРѕРїРёРё -РЎРЈРњ( p(i) * log2 p(i) ) РіРґРµ p (i) С‡Р°СЃС‚РѕС‚Р° РІСЃС‚СЂРµС‡Рё РєРѕРЅРєСЂРµС‚РЅРѕР№ Р±СѓРєРІС‹
+		// Формула ентропии -СУМ( p(i) * log2 p(i) ) где p (i) частота встречи конкретной буквы
 		ent += f * log2(f);
 
 		if (CONSOLE) std::cout << l << ';' << c << ';' << std::setprecision(12) << f << std::endl;
@@ -54,13 +54,13 @@ void measureEntropy(std::unordered_map<T, int> freq, int rang, unsigned int coun
 
 	ent /= -rang;
 
-	if (CONSOLE) std::cout << "Р­РЅС‚СЂРѕРїРёСЏ: " << ent << std::endl;
-	out << "Р­РЅС‚СЂРѕРїРёСЏ: " << ent << std::endl;
+	if (CONSOLE) std::cout << "Энтропия: " << ent << std::endl;
+	out << "Энтропия: " << ent << std::endl;
 }
 
 
-const std::vector<char> a1{ '_', 'Рђ', 'Р‘', 'Р’', 'Р“', 'Р”', 'Р•', 'Р–', 'Р—', 'Р', 'Р™', 'Рљ', 'Р›', 'Рњ', 'Рќ', 'Рћ', 'Рџ', 'Р ', 'РЎ', 'Рў', 'РЈ', 'Р¤', 'РҐ', 'Р¦', 'Р§', 'РЁ', 'Р©', 'Р«', 'Р¬', 'Р­', 'Р®', 'РЇ' };
-const std::vector<char> a2{ 'Рђ', 'Р‘', 'Р’', 'Р“', 'Р”', 'Р•', 'Р–', 'Р—', 'Р', 'Р™', 'Рљ', 'Р›', 'Рњ', 'Рќ', 'Рћ', 'Рџ', 'Р ', 'РЎ', 'Рў', 'РЈ', 'Р¤', 'РҐ', 'Р¦', 'Р§', 'РЁ', 'Р©', 'Р«', 'Р¬', 'Р­', 'Р®', 'РЇ' };
+const std::vector<char> a1{ '_', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Ь', 'Э', 'Ю', 'Я' };
+const std::vector<char> a2{ 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Ь', 'Э', 'Ю', 'Я' };
 
 void buildTable(std::unordered_map<std::string, int> freq, unsigned int count, std::vector<char> alphabet, const std::string& save) {
 	std::fstream out("table_" + save, std::fstream::out | std::fstream::trunc);
@@ -93,46 +93,63 @@ int main() {
 
 	const auto& toUpper = [](const char ch) -> char {
 		int code = static_cast<int>(ch);
-		return code > -33 ? static_cast<char>(code - 32) : ch;
+		
+		if (code == -72)
+			return static_cast<char>(-88);
+
+		return (code > -33 && code <= 0) ? static_cast<char>(code - 32) : ch;
 	};
 
 	const auto& isLetter = [](const char ch) -> bool {
-		return ch > -65 && ch < 0;
+		return ch > -65 && ch < -32 || ch == -88;
 	};
 
 	std::ifstream in(FILEPATH);
 
 	if (!in.is_open()) {
-		std::cout << "РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»... " << FILEPATH;
+		std::cout << "Не удалось открыть файл... " << FILEPATH;
 		return 0;
 	}
 
-	// РЎС‡РёС‚С‹РІР°РµРј Р±СѓРєРІС‹ СЃ С„Р°Р№Р»Р° РІ РІРµРєС‚РѕСЂ
+	// Считываем буквы с файла в вектор
 	std::vector<char> letters;
+	std::vector<char> letters_no_space;
 	char letter;
+
+	char prevCh = ' ';
 	while (in.get(letter)) {
-		letters.push_back(letter);
+		char ch = (letter != '\n' ? toUpper(letter) : ' ');
+
+		if (!isLetter(ch) && ch != ' ')
+			continue;
+
+		if (prevCh == ' ' && ch == ' ')
+			continue;
+
+		letters.push_back(ch);
+		prevCh = ch;
 	}
 
-	// Р—Р°РјРµРЅСЏРµРј Р±СѓРєРІСѓ <РЃ> Рё <РЄ> РЅР° <Р•> <Р¬> СЃРѕРѕС‚РІРµСЃС‚РІРµРЅРЅРѕ
+	// Заменяем букву <Ё> и <Ъ> на <Е> <Ь> соотвественно
 	std::transform(letters.begin(), letters.end(), letters.begin(),
 		[&toUpper](const char ch) -> char {
-			if (toUpper(ch) == 'РЃ') return 'e';
-			if (toUpper(ch) == 'РЄ') return 'СЊ';
+			if (toUpper(ch) == 'Ё') return 'Е';
+			if (toUpper(ch) == 'Ъ') return 'Ь';
 
 			return ch;
 		});
 
-	{
-		// Р‘РЈРљР’Р« (H1) - РЎ РџР РћР‘Р•Р›РђРњР
-		std::unordered_map<char, int> freq; 
-		unsigned int count = 0;
-		
-		for (const auto& ch : letters) {
-			if (!isLetter(ch) && ch != ' ')
-				continue;
+	std::copy_if(letters.begin(), letters.end(), std::back_inserter(letters_no_space), [](const char ch) {
+		return ch != ' ';
+	});
 
-			freq[ch == ' ' ? '_' : toUpper(ch)] += 1;
+	{
+		// БУКВЫ (H1) - С ПРОБЕЛАМИ
+		std::unordered_map<char, int> freq;
+		unsigned int count = 0;
+
+		for (const auto& ch : letters) {
+			freq[ch == ' ' ? '_' : ch] += 1;
 			count += 1;
 		}
 
@@ -140,15 +157,13 @@ int main() {
 	}
 
 	{
-		// Р‘РЈРљР’Р« (H1) - Р‘Р•Р— РџР РћР‘Р•Р›РћР’
+		// БУКВЫ (H1) - БЕЗ ПРОБЕЛОВ
 		std::unordered_map<char, int> freq;
 		unsigned int count = 0;
 
-		for (const auto& ch : letters) {
-			if (!isLetter(ch))
-				continue;
+		for (const auto& ch : letters_no_space) {
 
-			freq[toUpper(ch)] += 1;
+			freq[ch] += 1;
 			count += 1;
 		}
 
@@ -156,7 +171,7 @@ int main() {
 	}
 
 	{
-		// Р‘РЈРљР’Р« (H2) - C РџР РћР‘Р•Р›РђРњР
+		// БУКВЫ (H2) - C ПРОБЕЛАМИ
 		std::unordered_map<std::string, int> freq;
 		unsigned int count = 0;
 
@@ -165,13 +180,9 @@ int main() {
 			char first  = letters[i];
 			char second = letters[i + 1];
 
-			if ((!isLetter(first)  && first  != ' ') ||
-				(!isLetter(second) && second != ' '))
-				continue;
-
 			std::string bigram;
-			bigram += (first  == ' ' ? '_' : toUpper(first));
-			bigram += (second == ' ' ? '_' : toUpper(second));
+			bigram += (first  == ' ' ? '_'  : first);
+			bigram += (second == ' ' ? '_' : second);
 
 			freq[bigram] += 1;
 			count += 1;
@@ -182,20 +193,14 @@ int main() {
 	}
 
 	{
-		// Р‘РЈРљР’Р« (H2) - Р‘Р•Р— РџР РћР‘Р•Р›РћР’
+		// БУКВЫ (H2) - БЕЗ ПРОБЕЛОВ
 		std::unordered_map<std::string, int> freq;
 		unsigned int count = 0;
 
-		for (auto i = 0; i < letters.size() - 1; ++i) {
-			char first  = letters[i];
-			char second = letters[i + 1];
-
-			if (!isLetter(first) || !isLetter(second))
-				continue;
-
+		for (auto i = 0; i < letters_no_space.size() - 1; ++i) {
 			std::string bigram;
-			bigram += toUpper(first);
-			bigram += toUpper(second);
+			bigram += letters_no_space[i];
+			bigram += letters_no_space[i + 1];
 
 			freq[bigram] += 1;
 			count += 1;
@@ -206,22 +211,18 @@ int main() {
 	}
 
 	{
-		// Р‘РЈРљР’Р« (H2) - C РџР РћР‘Р•Р›РђРњР РЎ РЁРђР“РћРњ
+		// БУКВЫ (H2) - C ПРОБЕЛАМИ С ШАГОМ
 		std::unordered_map<std::string, int> freq;
 		unsigned int count = 0;
 
 
 		for (auto i = 0; i < letters.size() - 2; i += 2) {
-			char first = letters[i];
+			char first  = letters[i];
 			char second = letters[i + 1];
 
-			if ((!isLetter(first) && first != ' ') ||
-				(!isLetter(second) && second != ' '))
-				continue;
-
 			std::string bigram;
-			bigram += (first == ' ' ? '_' : toUpper(first));
-			bigram += (second == ' ' ? '_' : toUpper(second));
+			bigram += (first  == ' ' ? '_' : first);
+			bigram += (second == ' ' ? '_' : second);
 
 			freq[bigram] += 1;
 			count += 1;
@@ -232,20 +233,14 @@ int main() {
 	}
 
 	{
-		// Р‘РЈРљР’Р« (H2) - Р‘Р•Р— РџР РћР‘Р•Р›РћР’ РЎ РЁРђР“РћРњ
+		// БУКВЫ (H2) - БЕЗ ПРОБЕЛОВ С ШАГОМ
 		std::unordered_map<std::string, int> freq;
 		unsigned int count = 0;
 
-		for (auto i = 0; i < letters.size() - 2; i += 2) {
-			char first = letters[i];
-			char second = letters[i + 1];
-
-			if (!isLetter(first) || !isLetter(second))
-				continue;
-
+		for (auto i = 0; i < letters_no_space.size() - 2; i += 2) {
 			std::string bigram;
-			bigram += toUpper(first);
-			bigram += toUpper(second);
+			bigram += letters_no_space[i];
+			bigram += letters_no_space[i + 1];
 
 			freq[bigram] += 1;
 			count += 1;
